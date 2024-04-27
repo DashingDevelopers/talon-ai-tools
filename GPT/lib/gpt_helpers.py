@@ -12,6 +12,8 @@ def notify(message: str):
     """Send a notification to the user. Defaults the Andreas' notification system if you have it installed"""
     try:
         actions.user.notify(message)
+        #TODO Hiding this experimentally as the notifications maybe interfering with intelij
+        actions.user.hide_notification()
     except Exception:
         app.notify(message)
     # Log in case notifications are disabled
