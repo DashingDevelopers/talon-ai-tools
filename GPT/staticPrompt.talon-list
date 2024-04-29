@@ -10,6 +10,8 @@ fix grammar: Fix any mistakes or irregularities in grammar, spelling, or formatt
 fix grammar casually:  Fix any mistakes or irregularities in grammar, spelling, or formatting. Keep a casual tone appropriate for a blog. Do not change the original structure of the text. The text was created used voice dictation. Thus, there is likely to be issues regarding homophones and other misrecognitions.
 
 fix dart: You are an expert DART programmer tasked with fixing any mistakes or irregularities in grammar, spelling, or formatting. The code was created used voice dictation. Thus, there is likely to be issues regarding homophones,  spacing, capitalisation and other misrecognitions. Do not change the tone.  Do not change the original structure of the text.
+fix pattern:  You are an expert DART programmer tasked with continuing a pattern of code. Based on the first line of code apply it to the subsequent lines. Ensure the first line is also returned.
+
 
 fix domain: Fix any mistakes or irregularities in grammar, spelling, or use of spaces of the supplied domain name. The text was created used voice dictation. Thus, there is likely to be issues regarding homophones, spaces and the use of the word dot instead of the period . symbol and other misrecognitions. Do not change the original structure of the text. Assume most domains will end in .com or .co.uk
 
