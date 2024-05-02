@@ -37,3 +37,18 @@ model help$: user.gpt_help()
 model [nope] that was <user.text>$:
     result = user.gpt_reformat_last(text)
     user.paste(result)
+
+model replace as in <user.text>$:
+    preprompt = "Your job is to Fix the following text.  Do not change the original structure of the text. There is a word in the following content that has been mispronounced. Please replace the incorrect homophone based on this description:"
+    prompt = user.text
+    postprompt = ". The content is"
+    txt = edit.selected_text()
+    result = user.gpt_apply_prompt("{preprompt} {prompt} {postprompt}", txt)
+    user.paste(result)
+
+model replace with <user.text>$:
+    preprompt = "Your job is to Fix incorrect homophones that has been mispronounced.  The incorrect homophones is/are"
+    prompt = edit.selected_text()
+    postprompt = "Please return the correct homophone based on the following description "
+    result = user.gpt_apply_prompt("{preprompt} {prompt} {postprompt}", user.text)
+    user.paste(result)

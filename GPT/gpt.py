@@ -38,8 +38,12 @@ def gpt_query(prompt: str, content: str) -> str:
     url = settings.get("user.model_endpoint")
 
     headers, data = generate_payload(prompt, content)
+    print(f"Prompt: {prompt}")
+    print(f"Content: {content}")
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
+
+    print(response.json())
 
     match response.status_code:
         case 200:
@@ -95,8 +99,9 @@ class UserActions:
         actions.user.paste(text_to_confirm)
         confirmation_gui.hide()
 
-    def gpt_apply_prompt(prompt: str, text_to_process: str | list[str]) -> str:
+    def gpt_apply_prompt(prompt: str | list[str], text_to_process: str | list[str]) -> str:
         """Apply an arbitrary prompt to arbitrary text"""
+        prompt = " ".join(prompt) if isinstance(prompt, list) else prompt
         text_to_process = (
             " ".join(text_to_process)
             if isinstance(text_to_process, list)
