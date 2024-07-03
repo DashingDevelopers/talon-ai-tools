@@ -1,11 +1,14 @@
+import base64
 import os
-import platform
-import re
 from typing import Optional, Tuple
 
-from talon import actions, app, settings
+from talon import actions, app, clip, settings
 
-from .types import Data, Headers, Tool
+from .modelTypes import Data, Headers, Tool
+
+""""
+All functions in this this file have impure dependencies on either the model or the talon APIs
+"""
 
 
 def notify(message: str):
@@ -74,14 +77,15 @@ def generate_payload(
     return headers, data
 
 
-def remove_wrapper(text: str):
-    """Remove the string wrapper from the str representation of a command"""
-    # different command wrapper for Linux.
-    if platform.system() == "Linux":
-        regex = r"^.*?'(.*?)'.*?$"
-    else:
-        # TODO condense these regexes. Hard to test between platforms
-        # since the wrapper is slightly different
-        regex = r'[^"]+"([^"]+)"'
-    match = re.search(regex, text)
-    return match.group(1) if match else text
+def get_clipboard_image():
+    try:
+        clipped_image = clip.image()
+        if not clipped_image:
+            raise Exception("No image found in clipboard")
+
+        data = clipped_image.encode().data()
+        base64_image = base64.b64encode(data).decode("utf-8")
+        return base64_image
+    except Exception as e:
+        print(e)
+        raise Exception("Invalid image in clipboard")

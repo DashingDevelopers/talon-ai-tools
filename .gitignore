@@ -2,3 +2,9 @@ gpt-settings.talon
 # TalonDoc
 /docs/_build
 .idea
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+
+node_modules/

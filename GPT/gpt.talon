@@ -1,26 +1,17 @@
-# Ask a question in the voice command and the AI will answer it.
-model ask <user.text>$:
-    result = user.gpt_answer_question(text)
-    user.paste(result)
+# Shows the list of available prompts
+model help$: user.gpt_help()
 
-# Runs a model prompt on the selected text and pastes the result.
-model {user.staticPrompt} [this]$:
-    text = edit.selected_text()
-    result = user.gpt_apply_prompt(user.staticPrompt, text)
-    user.paste(result)
+# Runs a model prompt on the selected text; inserts with paste by default
+#   Example: `model fix grammar below` -> Fixes the grammar of the selected text and pastes below
+#   Example: `model explain this` -> Explains the selected text and pastes in place
+#   Example: `model fix grammar clip to browser` -> Fixes the grammar of the text on the clipboard and opens in browser`
+model <user.modelPrompt> [{user.modelSource}] [{user.modelDestination}]:
+    text = user.gpt_get_source_text(modelSource or "")
+    result = user.gpt_apply_prompt(modelPrompt, text)
+    user.gpt_insert_response(result, modelDestination or "")
 
-# Runs a model prompt on the selected text and sets the result to the clipboard
-model clip {user.staticPrompt} [this]$:
-    text = edit.selected_text()
-    result = user.gpt_apply_prompt(user.staticPrompt, text)
-    clip.set_text(result)
-
-# Say your prompt directly and the AI will apply it to the selected text
-model please <user.text>$:
-    prompt = user.text
-    txt = edit.selected_text()
-    result = user.gpt_apply_prompt(prompt, txt)
-    user.paste(result)
+# Select the last GPT response so you can edit it further
+model take response: user.gpt_select_last()
 
 # Applies an arbitrary prompt from the clipboard to selected text and pastes the result.
 # Useful for applying complex/custom prompts that need to be drafted in a text editor.
@@ -29,9 +20,6 @@ model apply [from] clip$:
     text = edit.selected_text()
     result = user.gpt_apply_prompt(prompt, text)
     user.paste(result)
-
-# Shows the list of available prompts
-model help$: user.gpt_help()
 
 # Reformat the last dictation with additional context or formatting instructions
 model [nope] that was <user.text>$:
